@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 #should the nef or jpeg image file be used?
 def main():
 
-    # creating the tiff file from the .jpeg
-    imagePath = 'Desktop/590/baby.jpeg' 
+    # creating the tiff file from the .nef
+    imagePath = 'Desktop/590/baby.nef' 
     outputPath = 'Desktop/590/baby.tiff'
     jpegImage = io.imread(imagePath)
 
@@ -33,6 +33,19 @@ def main():
 
     #converting to a dp array
     dpArray = image.astype(np.float64)
+
+    # scaling factor and shift for linear transformation
+    scale = 1.0 / (white - black)
+    shift = -black * scale
+
+    # linear transformation
+    imageLinear = image.astype(np.float64) * scale + shift
+
+    # Clip values to range [0, 1]
+    imageLinear = np.clip(imageLinear, 0, 1)
+
+
+
 
     print("black: ", black)
     print("white: ", white)
