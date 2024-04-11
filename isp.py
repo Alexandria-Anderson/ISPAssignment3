@@ -39,7 +39,7 @@ def main():
     shift = -black * scale
 
     # linear transformation
-    imageLinear = image.astype(np.float64) * scale + shift
+    imageLinear = dpArray.astype(np.float64) * scale + shift
 
     # Clip values to range [0, 1]
     imageLinear = np.clip(imageLinear, 0, 1)
