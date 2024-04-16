@@ -6,23 +6,13 @@ import matplotlib.pyplot as plt
 #should the nef or jpeg image file be used?
 def main():
 
-    # creating the tiff file from the .nef
-    imagePath = 'Desktop/590/baby.nef' 
-    outputPath = 'Desktop/590/baby.tiff'
-    jpegImage = io.imread(imagePath)
+    imagePath = 'Desktop/590/baby.tiff' 
+    white = 16383
+    black = 0
 
-    io.imsave(outputPath, jpegImage)
-
-    image = io.imread(outputPath)
-
-    #finding black and white
-    black = np.min(image)
-    white = np.max(image)
-
-    #finding the rgb values
-    rScale = np.max(image[:, :, 0]) - np.min(image[:, :, 0])
-    gScale = np.max(image[:, :, 1]) - np.min(image[:, :, 1])
-    bScale = np.max(image[:, :, 2]) - np.min(image[:, :, 2])
+    image = io.imread(imagePath)
+    plt.imshow(image)
+    plt.show()
 
 
     #image deminsions
@@ -35,23 +25,16 @@ def main():
     dpArray = image.astype(np.float64)
 
     # scaling factor and shift for linear transformation
-    scale = 1.0 / (white - black)
-    shift = -black * scale
 
+    scale_denom = max(white - black, 1e-10)  # Ensure the denominator is not zero
+    scale = 1.0 / scale_denom
+    shift = -np.float64(black) * np.float64(scale)
     # linear transformation
-    imageLinear = dpArray.astype(np.float64) * scale + shift
+    imageLinear = dpArray * scale + shift
 
     # Clip values to range [0, 1]
     imageLinear = np.clip(imageLinear, 0, 1)
 
-
-
-
-    print("black: ", black)
-    print("white: ", white)
-    print("R scale: ", rScale)
-    print("G scale: ", gScale)
-    print("B scale: ", bScale)
     print("Bits per pixel:", bitsPerPixel)
     print("Width:", width)
     print("Height:", height)
