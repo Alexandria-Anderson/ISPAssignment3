@@ -9,6 +9,10 @@ def main():
     imagePath = 'Desktop/590/baby.tiff' 
     white = 16383
     black = 0
+    red = 1.628906
+    geen = 1.0
+    blue = 1.386719
+
 
     image = io.imread(imagePath)
     plt.imshow(image)
