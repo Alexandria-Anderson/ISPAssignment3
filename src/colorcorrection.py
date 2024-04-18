@@ -2,6 +2,7 @@ from skimage import io
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
+import os
 
 Image.MAX_IMAGE_PIXELS = None
 
@@ -58,7 +59,22 @@ def gamma_encoding(image, gamma):
 
 image = adjust_brightness(corrected_image, 100)
 image = gamma_encoding(image, 100)
-io.imsave('image path', image)
+
+
+# compression
+io.imsave('image_no_compression.png', image)
+
+io.imsave('image_quality_95.jpg', image, quality=95)
+
+original_size = len(image.tobytes())
+png_size = os.path.getsize('image_no_compression.png')
+jpeg_size = os.path.getsize('image_quality_95.jpg')
+
+png_compression_ratio = original_size / png_size
+jpeg_compression_ratio = original_size / jpeg_size
+
+print("Compression ratio (PNG):", png_compression_ratio)
+print("Compression ratio (JPEG):", jpeg_compression_ratio)
 
 plt.imshow(image)
 plt.show()
